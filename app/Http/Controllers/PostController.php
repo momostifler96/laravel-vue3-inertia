@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -40,7 +41,6 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {   
-
         try {
             request()->validate([
                 "title"=>["alpha","required","min:10"],
@@ -63,6 +63,12 @@ class PostController extends Controller
         }
     }
 
+    public function myPosts()
+    {   
+        $posts = request()->user()->posts()->paginate();
+        return Inertia::render("dashboard/post/index",compact("posts"));
+        
+    }
 
     public function show(Post $post)
     {

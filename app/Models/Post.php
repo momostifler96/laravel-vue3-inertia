@@ -17,4 +17,9 @@ class Post extends Model
         'links'=>'array',
         'options'=>'array',
     ];
+    
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

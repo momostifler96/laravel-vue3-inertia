@@ -16,8 +16,14 @@
                 </ul>
             </div>
             <div class="flex items-center justify-end absolute lg:relative right-0">
-                <button class="flex mx-2 bg-white justify-center items-center rounded-lg border w-8 h-8 text-black hover:bg-blue-300"><i class="bi bi-person"></i></button>
-                <button class="flex bg-white justify-center items-center rounded-lg border w-8 h-8 text-black hover:bg-blue-300"><i class="bi bi-person-plus"></i></button>
+                <template v-if="$page.props.auth">
+                    <Link :href="route('dashboard.index')" class="flex mx-2 bg-white justify-center items-center rounded-lg border w-10 h-10 text-black hover:bg-blue-300"><img :src="$page.props.auth.picture" alt=""></Link>
+                </template>
+                <template v-else>
+                    <Link :href="route('login')" class="flex mx-2 bg-white justify-center items-center rounded-lg border w-8 h-8 text-black hover:bg-blue-300"><i class="bi bi-person"></i></Link>
+                    <Link :href="route('register')" class="flex bg-white justify-center items-center rounded-lg border w-8 h-8 text-black hover:bg-blue-300"><i class="bi bi-person-plus"></i></Link>
+                </template>
+
             </div>
         </nav>
     </header>
@@ -57,8 +63,20 @@
         
 </template>
 <script setup>
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 import Logo from '@/Components/Logo.vue';
 import { ref } from 'vue';
-const showPages = ref(false);
+const showPages = ref(false)
+const page = usePage().props.value;
+
+if(page.flash.success){
+    toast.fire({text:page.flash.success,icon:"success"});
+}
+if(page.flash.warning){
+    toast.fire({text:page.flash.warning,icon:"warning"});
+}
+if(page.flash.error){
+    toast.fire({text:page.flash.error,icon:"error"});
+}
+
 </script>

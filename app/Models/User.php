@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -55,13 +56,17 @@ class User extends Authenticatable
         }
     public function getPictureAttribute()
         {
-            return $this->getFirstMediaUrl("picture")?$this->getFirstMediaUrl("picture"):"/images/image-placeholder.png";
+            return /* $this->getFirstMediaUrl("picture")?$this->getFirstMediaUrl("picture"): */"/images/avatar.png";
         }
 
     public function getCreatedAttribute(): string
         {
             return Carbon::parse($this->created_at)->format('d/m/Y');
         }
+    public function posts()
+    {
+        return $this->HasMany(Post::class);
+    }
 
 
 }
