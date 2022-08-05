@@ -16,21 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/* Route::group(["controller"=>HomeController::class,"as"=>"home."],function(){
+ Route::group(["controller"=>HomeController::class,"as"=>"home."],function(){
     Route::get("/",HomeController::class)->name("index");
     Route::get("/support","support")->name("support");
     Route::get("/aide","help")->name("help");
-    Route::get("/")->name("index");
+    //Route::get("/")->name("index");
 });
- */
-/* Route::group(["prefix"=>"article","as"=>"post","controller",PostController::class],function(){
+ 
+ Route::group(["prefix"=>"article","as"=>"post.","controller",PostController::class],function(){
     Route::get("/",PostController::class)->name("index");
-    Route::get("/{slug}","show")->name("show");
+    Route::get("/post/{slug}",[PostController::class,"show"])->name("show");
     Route::middleware(["auth"])->group(function(){
-        Route::get("/{slug}/edit","edit")->name("edit");
+        Route::get("/{slug}/edit",[PostController::class,"edit"])->name("edit");
     });
 });
- */
+ 
 /* Route::get('/', function () {
     return view('welcome');
 }); */

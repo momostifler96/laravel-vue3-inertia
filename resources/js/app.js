@@ -6,10 +6,10 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import PrimeVue from 'primevue/config';
 import Maska from 'maska'
+import Swal from "sweetalert2";
+window.swal = Swal;
 
-window.swal = swal;
-
-const toast = swal.mixin({
+const toast = Swal.mixin({
     toast: true,
     position: 'top-right',
     showConfirmButton: false,

@@ -1,4 +1,7 @@
-@import "../node_modules/bootstrap/scss/bootstrap";
-@import '../node_modules/primevue/resources/themes/saga-blue/theme.css';
-@import '../node_modules/primevue/resources/primevue.min.css';
-@import '../node_modules/primeicons/primeicons.css';
+$primary:rgb(238, 155, 0);
+$secondary:#fff;
+$bg-primary:rgb(232, 238, 241);
+$bg-secondary:#fff;
+body{
+    background-color: $bg-primary;
+}

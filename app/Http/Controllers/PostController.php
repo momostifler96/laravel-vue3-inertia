@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class PostController extends Controller
 {   
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +18,7 @@ class PostController extends Controller
     public function __invoke()
     {   
 
-        $post = Post::paginate(20);
+        $posts = Post::paginate(20);
         return Inertia::render("blog/index",compact("posts"));
     }
 
@@ -63,12 +63,7 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Post $post)
     {
         return Inertia::render("blog/single",compact("post"));

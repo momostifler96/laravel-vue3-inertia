@@ -7,8 +7,9 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
+        <link rel="stylesheet" href="{{ asset('/css/lib.css') }}">
         <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
-        <link rel="stylesheet" href="{{ asset('/css/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('/css/style.css') }}">
 
         <!-- Scripts -->
         <script src="{{ asset('/js/app.js') }}" defer></script>
