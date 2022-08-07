@@ -1,4 +1,5 @@
 <template>
+    <FlashMessage/>
     <header class="lg:container mx-auto p-3">
         <nav class="grid grid-cols-1 lg:grid-cols-3 gap-1 relative">
             <div class="flex lg:hidden  items-center justify-end absolute lg:relative left-0">
@@ -66,17 +67,8 @@
 import { Link, usePage } from '@inertiajs/inertia-vue3';
 import Logo from '@/Components/Logo.vue';
 import { ref } from 'vue';
-const showPages = ref(false)
-const page = usePage().props.value;
+import FlashMessage from '@/Components/FlashMessage.vue';
 
-if(page.flash.success){
-    toast.fire({text:page.flash.success,icon:"success"});
-}
-if(page.flash.warning){
-    toast.fire({text:page.flash.warning,icon:"warning"});
-}
-if(page.flash.error){
-    toast.fire({text:page.flash.error,icon:"error"});
-}
+const showPages = ref(false);
 
 </script>

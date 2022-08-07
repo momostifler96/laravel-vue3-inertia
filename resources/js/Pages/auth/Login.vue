@@ -71,8 +71,8 @@ import { Head,Link } from '@inertiajs/inertia-vue3';
 import { ref } from 'vue';
 
 const form = ref({
-    uuid:'',
-    password:'',
+    uuid:'momoledev',
+    password:'9j&Sm@Ibx#v1pYlQ',
     remember:ref(true),
 });
 

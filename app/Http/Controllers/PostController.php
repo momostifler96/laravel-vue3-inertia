@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -19,7 +23,7 @@ class PostController extends Controller
     public function __invoke()
     {   
 
-        $posts = Post::paginate(20);
+        $posts = Post::orderBy('created_at','desc')->paginate(20);
         return Inertia::render("blog/index",compact("posts"));
     }
 
@@ -29,8 +33,10 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return Inertia::render("dashboard/post/Create");
+    {   
+        $categories = Category::all();
+        $tags = Tag::all();
+        return Inertia::render("dashboard/post/Create",compact("categories","tags"));
     }
 
     /**
@@ -42,21 +48,24 @@ class PostController extends Controller
     public function store(Request $request)
     {   
         try {
-            request()->validate([
-                "title"=>["alpha","required","min:10"],
-                "slug"=>["alpha_dash","required","min:10",""],
-                "description"=>["alpha","required","min:10"],
-            ]);
+
             DB::beginTransaction();
-            $post = Post::create($request->input());
-            $post->category()->save(request()->category);
+            $post = Post::create([
+                "title"=>$request->input('title'),
+                "type"=>$request->input('type'),
+                "slug"=>$request->input('title').''.Carbon::now(),
+                "description"=>$request->input('contente'),
+                "category_id"=>$request->input('categorie'),
+                "user_id"=>Auth::id(),
+            ]);
+            //$post->category()->save(request()->category);
             //$post->tag()->saveMany(request()->category);
 
             DB::commit();
             session()->flash("success","votre article a bien ete cree");
-            
+            return to_route('dashboard.post.myPosts');
         } catch (\Throwable $th) {
-            
+            Log::info('Erreur lors de lenregistrement de votre article : '.$th->getMessage());
             DB::rollBack();
             session()->flash("error","Erreur lors de la creation de votre article");
             
@@ -65,14 +74,18 @@ class PostController extends Controller
 
     public function myPosts()
     {   
-        $posts = request()->user()->posts()->paginate();
-        return Inertia::render("dashboard/post/index",compact("posts"));
+        $categories = Category::all();
+        $posts = request()->user()->posts()->when(request()->query('category'),function($post,$cat){
+            return $post->where('category_id',$cat);
+        })->orderBy('created_at','desc')->paginate();
+        return Inertia::render("dashboard/post/index",compact("posts","categories"));
         
     }
 
-    public function show(Post $post)
-    {
-        return Inertia::render("blog/single",compact("post"));
+    public function show($slug)
+    {   
+        $post = Post::where('slug',$slug)->with('owner')->firstOrFail();
+        return Inertia::render("blog/Single",compact("post"));
     }
 
     /**
@@ -81,9 +94,12 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
-    {
-        return Inertia::render("dashboard/post/edit",compact("post"));
+    public function edit($slug)
+    {   
+        $categories = Category::all();
+        $tags = Tag::all();
+        $post = Post::where('slug',$slug)->firstOrFail();
+        return Inertia::render("dashboard/post/Edit",compact("post","categories","tags"));
     }
 
     /**
@@ -96,16 +112,27 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {   
         try {
+            $post = Post::find($request->id);
             DB::beginTransaction();
-            $post->update($request->input());
+            $post->update([
+                "title"=>$request->input('title'),
+                "type"=>$request->input('type'),
+                "slug"=>$request->input('title').''.Carbon::now(),
+                "description"=>$request->input('contente'),
+                "category_id"=>$request->input('categorie'),
+                "user_id"=>Auth::id(),
+            ]);
+            //$post->category()->save(request()->category);
+            //$post->tag()->saveMany(request()->category);
+
             DB::commit();
-            session()->flash("success","votre article a bien ete mis ajour");
-            
+            session()->flash("success","votre article a bien ete mis ajour ");
+            return to_route('dashboard.post.myPosts');
         } catch (\Throwable $th) {
             
             DB::rollBack();
             session()->flash("error","Erreur lors de la mis ajour de votre article");
-            
+            return back();
         }
 
     }
@@ -116,18 +143,21 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
-    {
+    public function destroy(Request $request)
+    {   
+            
         try {
             DB::beginTransaction();
-                Post::destroy($post->id);
+            Post::destroy($request->id);
             DB::commit();
             session()->flash("success","votre article a bien ete suprimer");
+            return back();
             
         } catch (\Throwable $th) {
             
             DB::rollBack();
             session()->flash("error","Erreur lors de la suppression de votre article");
+            return back();
             
         }
     }

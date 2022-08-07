@@ -25,23 +25,23 @@ use Illuminate\Support\Facades\Route;
 });
  
  Route::group(["prefix"=>"article","as"=>"post.","controller",PostController::class],function(){
-    Route::get("/")->name("index");
+    Route::get("/",PostController::class)->name("index");
     Route::get("/post/{slug}",[PostController::class,"show"])->name("show");
     Route::middleware(["auth"])->group(function(){
         Route::get("/{slug}/edit",[PostController::class,"edit"])->name("edit");
     });
 });
 
-Route::group(['prefix'=>'mom-compte','as'=>'dashboard.','middleware','auth'],function(){
+Route::group(['prefix'=>'mom-compte','as'=>'dashboard.','middleware'=>'auth'],function(){
     Route::get('/',DashboardController::class)->name('index');
     Route::get('/modification-de-profile',[DashboardController::class,'editProfile'])->name('edit-profile');
      Route::group(['prefix'=>'posts','as'=>'post.','controller'=>PostController::class],function(){
         Route::get('/','myPosts')->name('myPosts');
         Route::get('/edit/{slug}','edit')->name('edit');
-       Route::post('/edit','update')->name('update');
+        Route::post('/edit','update')->name('update');
         Route::get('/nouveau','create')->name('create');
         Route::post('/nouveau','store')->name('store');
-       /*  Route::post('/delete','')->name('delete');*/
+       Route::post('/delete','destroy')->name('delete');
     }); 
 });
  

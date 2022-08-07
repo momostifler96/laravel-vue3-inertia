@@ -3,6 +3,8 @@
         
     </Head>
     <Auth>
+        <h3 class="text-3xl text-bold text-center my-3">Mon profile</h3>
+
         <div>
             
         </div>
