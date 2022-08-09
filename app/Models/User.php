@@ -50,9 +50,9 @@ class User extends Authenticatable
             $this->addMediaCollection('picture');
         }
 
-    public function getFullNameAttribute()
+        public function getFullNameAttribute(): string
         {
-            return $this->first_mame.' '.$this->last_mame;
+            return $this->last_name . ' ' . $this->first_name;
         }
     public function getPictureAttribute()
         {

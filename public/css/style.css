@@ -1,3 +1,7 @@
 body {
   background-color: rgb(232, 238, 241);
 }
+
+.rating-box div {
+  display: flex;
+}

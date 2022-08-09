@@ -5,3 +5,8 @@ $bg-secondary:#fff;
 body{
     background-color: $bg-primary;
 }
+.rating-box{
+    div{
+        display: flex;
+    }
+}

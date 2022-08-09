@@ -24,11 +24,13 @@ use Illuminate\Support\Facades\Route;
     //Route::get("/")->name("index");
 });
  
- Route::group(["prefix"=>"article","as"=>"post.","controller",PostController::class],function(){
+ Route::group(["prefix"=>"article","as"=>"post.","controller"=>PostController::class],function(){
     Route::get("/",PostController::class)->name("index");
-    Route::get("/post/{slug}",[PostController::class,"show"])->name("show");
+    Route::post('/post/newcomment','addComment')->name('comment.new');
+
+    Route::get("/post/{slug}",'show')->name("show");
     Route::middleware(["auth"])->group(function(){
-        Route::get("/{slug}/edit",[PostController::class,"edit"])->name("edit");
+        Route::get("/{slug}/edit",'edit')->name("edit");
     });
 });
 

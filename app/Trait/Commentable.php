@@ -6,28 +6,33 @@ use App\Models\Comment;
 
 trait Commentable
 {   
-    protected function comments()
+    public function comments()
     {
-        return $this->MorphMany(Comment::class,"model");
+        return $this->morphMany(Comment::class,"model");
     }
 
     public function newComment($data)
     {
-        return $this->comments()->save($data);
+        return $this->comments()->create($data);
     }
 
-    public function updateComment($data)
+    public function getAllComments($data = null)
     {
-        return $this->comments()->update($data);
+        return $this->comments()->orderBy('created_at','desc')->paginate();
     }
-
     public function getComments($data = null)
     {
-        return $this->comments()->get($data);
+        return $this->comments()->orderBy('created_at','desc')->when($data,function($com,$dt){
+            return $com->pluck($dt);
+        })->take(5);
     }
 
-    public function deleteComment($id)
+    
+
+    public function getCommentsCountAttribute()
     {
-        return $this->comments()->destroy($id);
+        return $this->comments()->count();
     }
+
+    
 }

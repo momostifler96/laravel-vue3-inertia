@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Post;
-use App\Models\Tag;
 use Carbon\Carbon;
+use App\Models\Tag;
+use App\Models\Post;
+use Inertia\Inertia;
+use App\Models\Comment;
+use App\Models\Category;
+use App\Models\Rate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {   
@@ -84,8 +86,12 @@ class PostController extends Controller
 
     public function show($slug)
     {   
-        $post = Post::where('slug',$slug)->with('owner')->firstOrFail();
-        return Inertia::render("blog/Single",compact("post"));
+
+        $post = Post::where('slug',$slug)->with('owner','comments')->firstOrFail();
+        $comment = Auth::check()? Comment::where('user_id',Auth::id())->where('model_type',Post::class)->where('model_id',$post->id)->first():false;
+        $rate = Auth::check()?  Rate::where('user_id',Auth::id())->where('model_type',Post::class)->where('model_id',$post->id)->first():false;
+
+        return Inertia::render("blog/Single",compact("post","comment","rate"));
     }
 
     /**
@@ -132,6 +138,47 @@ class PostController extends Controller
             
             DB::rollBack();
             session()->flash("error","Erreur lors de la mis ajour de votre article");
+            return back();
+        }
+
+    }
+    public function addComment(Request $request)
+    {   
+        try {
+             //dd($request->all());
+            $post = Post::find($request->id);
+            DB::beginTransaction();
+                if(!empty($request->comment)){
+
+                    if($request->comment_id && $comment = Comment::find($request->comment_id)){
+                        $comment->update(['comment'=>$request->comment]);
+                    }else{
+                        $post->newComment([
+                            'comment'=>$request->comment,
+                            'user_id'=>Auth::id(),
+                        ]);
+                    }
+                    
+                }
+                if($request->rate != 0){
+                    if($request->rate_id && $rate = Rate::find($request->rate_id)){
+                        $rate->update(['rate'=>$request->rate]);
+
+                    }else{
+                        $post->newRate([
+                            'rate'=>$request->rate,
+                            'user_id'=>Auth::id(),
+                        ]);
+                    }
+                    
+                }
+            DB::commit();
+            session()->flash("success","Votre commentaire et note on bien ete enregister ");
+            return back();
+        } catch (\Throwable $th) {
+            Log::info('error de note et commentaire : '.$th->getMessage());
+            DB::rollBack();
+            session()->flash("error","Erreur lors de la l'enregistrement de votre note et commentaire");
             return back();
         }
 
