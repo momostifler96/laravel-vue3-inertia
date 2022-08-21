@@ -65,7 +65,7 @@
                             <button type="submit" class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">S'INSCRIRE</button>
                         </div>
                     </div>
-                    <div class="flex justify-center mt-3"><Link :href="route('login')" class="font-semibold">Se connecter</Link></div>
+                    <div class="flex justify-center mt-3"><Link :href="route('register')" class="font-semibold">Se connecter</Link></div>
                 </form>
             </div>
         </div>

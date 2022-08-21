@@ -18,11 +18,9 @@
                     <Link :href="route('dashboard.index')" class="hover:bg-blue-100 text-black hover:text-white px-3 py-1 rounded-lg">mes abonner</Link>
                 </li>
                 <li>
-                    <Link :href="route('dashboard.post.create')" class="hover:bg-blue-100 text-black  hover:text-white px-3 py-1 rounded-lg">Modifier mon profile</Link>
+                    <Link :href="route('dashboard.post.create')" class="hover:bg-blue-100 text-black  hover:text-white px-3 py-1 rounded-lg">Ajouter un post</Link>
                 </li>
-                <li>
-                    <Link :href="route('dashboard.edit-profile')" class="hover:bg-blue-100 text-black  hover:text-white px-3 py-1 rounded-lg">Modifier mon profile</Link>
-                </li>
+                
 
             </ul>
             <div class="absolute right-0 top-0 z-10 flex items-center h-100">
