@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-       /*   \App\Models\User::factory()->create([
+    {/*
+          \App\Models\User::factory()->create([
             "username"=>"momoledev",
             "first_name"=>"doumbia",
             "last_name"=>"mohamed",
@@ -24,9 +24,9 @@ class UserSeeder extends Seeder
             "phone"=>"0544554896",
             "email"=>"admin@gbairai.com",
             "password"=>Hash::make("9j&Sm@Ibx#v1pYlQ"),
-        ]);  */
+        ]); */
 
         \App\Models\User::factory(30)->create();
-        
+
     }
 }
