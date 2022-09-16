@@ -1,33 +1,40 @@
 <template>
     <Head>
-        {{props.post.title}}
+        <title>{{post.title}}</title>
+        <meta name="description" :content="post.description" />
+        <meta name="keywords" :content="post.title" />
     </Head>
     <BlogLayout>
         <div class="grid grid-cols-7 mt-5">
             <div class="col-span-5">
-                <div class="container mx-auto">
-                     <h1 class="bg-white border rounded-lg p-3 my-3">{{props.post.title}}</h1>
-                    <div class="bg-white border rounded-lg p-3 my-3">
-                        <img :src="props.post.picture" class="rounded-lg" alt="">
+                <div class="container mx-auto bg-white p-3 rounded-lg ">
+                     <h1 class="  rounded-lg p-3 my-3 text-4xl font-bold">{{props.post.title}}</h1>
+                    <div class="  rounded-lg p-3 my-3">
+                        <img :src="post.picture" class="rounded-lg" alt="">
                     </div>
-                    <div class="bg-white border rounded-lg p-3 my-3" v-html="props.post.description">
-                        
+                    <div class=" rounded-lg p-3 my-3" v-html="post.description">
+
                     </div>
-                    <div  class="bg-white border rounded-lg p-3 my-3 flex justify-between">
-                        <div class="flex">
-                            <div class="h-10 w-10 overflow-hidden rounded-lg">
-                                <img :src="props.post.owner.picture" alt="">
+                    <div  class=" rounded-lg p-3 my-3 flex justify-between">
+                        <div class="">
+                            <div class="flex border p-2 my-2 rounded-lg">
+                            <div class="h-10 w-10 overflow-hidden rounded-lg ">
+                                <img :src="post.owner.picture" alt="">
                             </div>
                             <div class="items-center flex ml-2">
                                 <h2 class="text-sm text-bolde">{{props.post.owner.full_name}}</h2>
                             </div>
                         </div>
+                            <p>{{post.created}}</p>
+                        </div>
+
                         <Link v-if="$page.props.auth && $page.props.auth.id == props.post.user_id " v-tooltip.bottom="'Modifier'" :href="route('dashboard.post.edit',post.slug)" class="flex justify-center items-center rounded-lg border px-2 h-8 mx-2 text-xs bg-blue-500 hover:bg-blue-700 text-white"><i class="bi bi-pen mr-2"></i> Modifier</Link>
                     </div>
-                    <div  class="bg-white border rounded-lg p-3 my-3">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                        <div  class="bg-white border rounded-lg p-3 my-3">
                        <h4 class="text-xl">Laisser un avis</h4>
                        <div class="grid "></div>
-                       
+
                        <form @submit.prevent="submitComment" class="form-group col-span-2">
                         <div class="my-2">
                             <p>Note</p>
@@ -37,7 +44,7 @@
                          <textarea v-model="form.comment"  class="form-control mt-2" name="" id="" rows="3"></textarea>
                             <button type="submit" class="p-2 mt-3 bg-blue-500 hover:bg-blue-700 text-white rounded">Commenter</button>
                        </form>
-                      
+
                     </div>
                     <div  class="bg-white border rounded-lg p-3 my-3">
                          <div class="">
@@ -50,7 +57,7 @@
                         </div>
                         <div class="flex items-center">
                             <div class=" rating-box">
-                            <Rating v-model="val4" :cancel="false"/> 
+                            <Rating v-model="val4" :cancel="false"/>
                             </div>
                             <span class="mx-2 w-24">({{props.post.rate_4_count}})</span>
                             <ProgressBar :value="ratePercent(props.post.rate_4_count,props.post.rate_count)" color="bg-blue-500"/>
@@ -58,11 +65,11 @@
                         </div>
                         <div class="flex items-center">
                             <div class=" rating-box">
-                            <Rating v-model="val3" :cancel="false"/> 
+                            <Rating v-model="val3" :cancel="false"/>
                             </div>
                             <span class="mx-2  w-24">({{props.post.rate_3_count}})</span>
                             <ProgressBar :value="ratePercent(props.post.rate_3_count,props.post.rate_count)" color="bg-pink-500"/>
-                        
+
                         </div>
                         <div class="flex items-center">
                             <div class=" rating-box">
@@ -70,7 +77,7 @@
                             </div>
                             <span class="mx-2 w-24">({{props.post.rate_2_count}})</span>
                             <ProgressBar :value="ratePercent(props.post.rate_2_count,props.post.rate_count)" color="bg-orange-500"/>
-                        
+
                         </div>
                         <div class="flex items-center">
                             <div class=" rating-box">
@@ -78,10 +85,11 @@
                             </div>
                             <span class="mx-2 w-24">({{props.post.rate_1_count}})</span>
                             <ProgressBar :value="ratePercent(props.post.rate_1_count,props.post.rate_count)" color="bg-red-500" />
-                        
+
                         </div>
-                           
+
                        </div>
+                    </div>
                     </div>
 
                     <div  class="bg-white border rounded-lg p-3 my-3">
@@ -106,7 +114,7 @@
                     </div>
 
                 </div>
-               
+
             </div>
             <div class="col-span-2 mx-2">
                <PopularPostBar/>

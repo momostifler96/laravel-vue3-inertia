@@ -5,3 +5,36 @@ body {
 .rating-box div {
   display: flex;
 }
+
+@media (min-width: 1280px) {
+  .container-sm {
+    max-width: 900px;
+  }
+}
+@media (min-width: 1024) {
+  .container-sm {
+    max-width: 750px;
+  }
+}
+@media (min-width: 768px) {
+  .container-sm {
+    max-width: 750px;
+  }
+}
+.post-xl-card-content {
+  font-weight: 900;
+  font-size: 35px;
+}
+
+.bg-gradient-custom {
+  color: #fff;
+  background: linear-gradient(0deg, rgb(2, 0, 36) 2%, rgba(0, 0, 0, 0.3981967787) 41%, rgba(0, 212, 255, 0) 100%);
+}
+
+.img-w-1 {
+  width: 10rem;
+}
+
+.img-w-2 {
+  width: 17rem;
+}

@@ -30,6 +30,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_confirmed_at',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+        'email_verified_at',
+        'created_at',
+        'updated_at',
+        'birthday',
     ];
 
     /**
@@ -40,10 +47,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'birthday' => 'date',
-        
+
     ];
 
-    protected $appends=["picture","full_name","created"];
+    protected $appends=["picture","full_name","created","birthday_date"];
 
     public function registerMediaCollections(): void
         {
@@ -63,6 +70,12 @@ class User extends Authenticatable
         {
             return Carbon::parse($this->created_at)->format('d/m/Y');
         }
+
+    public function getBirthdayDateAttribute(): string
+        {
+            return Carbon::parse($this->birthday)->format('d/m/Y');
+        }
+
     public function posts()
     {
         return $this->HasMany(Post::class);

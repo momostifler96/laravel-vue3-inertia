@@ -23,14 +23,17 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
     Route::get("/",HomeController::class)->name("index");
     Route::get("/support","support")->name("support");
     Route::get("/aide","help")->name("help");
+    Route::post("/subscrib","subscrib")->name("subscrib");
     //Route::get("/")->name("index");
 });
- 
+
  Route::group(["prefix"=>"article","as"=>"post.","controller"=>PostController::class],function(){
     Route::get("/",PostController::class)->name("index");
     Route::post('/post/newcomment','addComment')->name('comment.new');
 
-    Route::get("/post/{slug}",'show')->name("show");
+    Route::get("/post/author/{username}",'author')->name("author");
+    Route::get("/post/article/{slug}",'show')->name("show");
+
     Route::middleware(["auth"])->group(function(){
         Route::get("/{slug}/edit",'edit')->name("edit");
     });
@@ -47,9 +50,9 @@ Route::group(['prefix'=>'mom-compte','as'=>'dashboard.','middleware'=>'auth'],fu
         Route::get('/nouveau','create')->name('create');
         Route::post('/nouveau','store')->name('store');
        Route::post('/delete','destroy')->name('delete');
-    }); 
+    });
 });
- 
+
 /* Route::get('/', function () {
     return view('welcome');
 }); */
